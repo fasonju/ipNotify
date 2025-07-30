@@ -1,4 +1,4 @@
-## ipNotify
+# ipNotify
 
 ipNotify is an event triggering tool for when the host's public ip changes.
 
@@ -12,7 +12,7 @@ To deploy this project copy and modify the `docker-compose.yml` file and run
 
 Alternatively you can simply run the binary alongside a .env file or by setting env variables manually
 
-# Environment Variables
+## Environment Variables
 
 Configure the behavior of the public IP tracker using the following environment variables:
 
