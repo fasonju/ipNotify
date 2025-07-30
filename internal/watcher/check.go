@@ -1,0 +1,46 @@
+package watcher
+
+import (
+	"fmt"
+	"log/slog"
+	"strings"
+
+	"github.com/fasonju/ipNotify/internal/notify"
+	"github.com/fasonju/ipNotify/internal/types"
+)
+
+func checkIpDiffAndNotify(previousIpv4, previousIpv6 string, cfg *types.Config) (string, string, error) {
+	newIpv4, newIpv6, err := fetchCurrentIPs(cfg)
+	if err != nil {
+		return previousIpv4, previousIpv6, err
+	}
+
+	if ipsChanged(previousIpv4, newIpv4, previousIpv6, newIpv6) {
+		message := formatChangeMessage(previousIpv4, newIpv4, previousIpv6, newIpv6, cfg)
+		if cfg.SmtpEnabled {
+			slog.Info("Notifying through SMTP")
+			notify.NotifySMTP(cfg, message)
+		}
+	} else {
+		slog.Info("No IP change", "ipv4", newIpv4, "ipv6", newIpv6)
+	}
+
+	return newIpv4, newIpv6, nil
+}
+
+func ipsChanged(prev4, new4, prev6, new6 string) bool {
+	return new4 != prev4 || new6 != prev6
+}
+
+func formatChangeMessage(prev4, new4, prev6, new6 string, cfg *types.Config) string {
+	var builder strings.Builder
+
+	if cfg.Ipv4Enabled && new4 != prev4 {
+		builder.WriteString(fmt.Sprintf("IPv4 changed from %s to %s\n", prev4, new4))
+	}
+	if cfg.Ipv6Enabled && new6 != prev6 {
+		builder.WriteString(fmt.Sprintf("IPv6 changed from %s to %s\n", prev6, new6))
+	}
+
+	return builder.String()
+}
