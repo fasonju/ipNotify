@@ -10,6 +10,7 @@ import (
 	"github.com/fasonju/ipNotify/internal/types"
 )
 
+// ListenIps starts a loop that periodically checks for IP changes and handles graceful shutdown.
 func ListenIps(cfg *types.Config) {
 	previousIpv4, previousIpv6 := getInitialIPs(cfg)
 
@@ -36,6 +37,7 @@ func ListenIps(cfg *types.Config) {
 	}
 }
 
+// setupSignalChannel sets up a channel to listen for OS interrupt and terminate signals.
 func setupSignalChannel() chan os.Signal {
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)

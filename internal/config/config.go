@@ -17,10 +17,12 @@ const (
 	IPV6_URL = "https://ipv6.icanhazip.com"
 )
 
+// LoadConfig reads environment variables (and .env file if present),
+// validates and returns a Config struct.
 func LoadConfig() (*types.Config, error) {
+	// Load .env if exists
 	if _, err := os.Stat(".env"); err == nil {
-		err := godotenv.Load(".env")
-		if err != nil {
+		if err := godotenv.Load(".env"); err != nil {
 			return nil, fmt.Errorf("failed to load vars from .env file: %w", err)
 		}
 		slog.Info(".env file loaded")
@@ -40,6 +42,7 @@ func LoadConfig() (*types.Config, error) {
 	if err != nil {
 		return nil, fmt.Errorf("invalid INTERVAL: %w", err)
 	}
+
 	smtpEnabled := os.Getenv("SMTP_ENABLED") == "true"
 	var (
 		smtpServer   = os.Getenv("SMTP_SERVER")
@@ -52,6 +55,7 @@ func LoadConfig() (*types.Config, error) {
 	)
 
 	if smtpEnabled {
+		// Validate required SMTP vars
 		missing := []string{}
 		if smtpServer == "" {
 			missing = append(missing, "SMTP_SERVER")
@@ -75,6 +79,7 @@ func LoadConfig() (*types.Config, error) {
 			return nil, fmt.Errorf("missing required SMTP environment variables: %s", strings.Join(missing, ", "))
 		}
 
+		// Parse SMTP port number
 		smtpPort, err = strconv.Atoi(smtpPortStr)
 		if err != nil || smtpPort <= 0 {
 			return nil, fmt.Errorf("invalid SMTP_PORT: %s", smtpPortStr)
@@ -100,6 +105,7 @@ func LoadConfig() (*types.Config, error) {
 	}, nil
 }
 
+// parseInterval parses duration strings like "5m", "1h", "2d", supporting various time units.
 func parseInterval(interval string) (time.Duration, error) {
 	interval = strings.TrimSpace(interval)
 	if len(interval) < 2 {

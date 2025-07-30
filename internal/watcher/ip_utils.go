@@ -7,6 +7,7 @@ import (
 	"github.com/fasonju/ipNotify/internal/types"
 )
 
+// getInitialIPs fetches and logs the initial IP addresses (IPv4/IPv6) based on config.
 func getInitialIPs(cfg *types.Config) (string, string) {
 	var previousIpv4, previousIpv6 string
 
@@ -33,6 +34,7 @@ func getInitialIPs(cfg *types.Config) (string, string) {
 	return previousIpv4, previousIpv6
 }
 
+// fetchCurrentIPs returns the current IPv4/IPv6 addresses or an error if a lookup fails.
 func fetchCurrentIPs(cfg *types.Config) (string, string, error) {
 	var newIpv4, newIpv6 string
 	var err error

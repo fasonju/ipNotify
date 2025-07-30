@@ -9,6 +9,8 @@ import (
 	"github.com/fasonju/ipNotify/internal/types"
 )
 
+// checkIpDiffAndNotify compares current IPs with previous ones,
+// triggers notifications if changes are detected.
 func checkIpDiffAndNotify(previousIpv4, previousIpv6 string, cfg *types.Config) (string, string, error) {
 	newIpv4, newIpv6, err := fetchCurrentIPs(cfg)
 	if err != nil {
@@ -17,6 +19,7 @@ func checkIpDiffAndNotify(previousIpv4, previousIpv6 string, cfg *types.Config) 
 
 	if ipsChanged(previousIpv4, newIpv4, previousIpv6, newIpv6) {
 		message := formatChangeMessage(previousIpv4, newIpv4, previousIpv6, newIpv6, cfg)
+
 		if cfg.SmtpEnabled {
 			slog.Info("Notifying through SMTP")
 			actions.NotifySMTP(cfg, message)
@@ -33,10 +36,12 @@ func checkIpDiffAndNotify(previousIpv4, previousIpv6 string, cfg *types.Config) 
 	return newIpv4, newIpv6, nil
 }
 
+// ipsChanged returns true if either IPv4 or IPv6 has changed.
 func ipsChanged(prev4, new4, prev6, new6 string) bool {
 	return new4 != prev4 || new6 != prev6
 }
 
+// formatChangeMessage builds a message describing the IP changes.
 func formatChangeMessage(prev4, new4, prev6, new6 string, cfg *types.Config) string {
 	var builder strings.Builder
 
