@@ -53,10 +53,10 @@ func formatChangeMessage(prev4, new4, prev6, new6 string, cfg *types.Config, ipv
 	var builder strings.Builder
 
 	if ipv4Err != nil {
-		builder.WriteString(fmt.Sprintf("IPV4 IP query error: %s", ipv4Err.Error()))
+		builder.WriteString(fmt.Sprintf("IPV4 IP query error: %s\n", ipv4Err.Error()))
 	}
 	if ipv6Err != nil {
-		builder.WriteString(fmt.Sprintf("IPV6 IP query error: %s", ipv6Err.Error()))
+		builder.WriteString(fmt.Sprintf("IPV6 IP query error: %s\n", ipv6Err.Error()))
 	}
 
 	if cfg.Ipv4Enabled && new4 != prev4 {
