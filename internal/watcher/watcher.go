@@ -27,7 +27,7 @@ func ListenIps(cfg *types.Config) {
 			var err error
 			previousIpv4, previousIpv6, err = checkIpDiffAndNotify(previousIpv4, previousIpv6, cfg)
 			if err != nil {
-				slog.Error("Unable to check IPs", "error", err)
+				slog.Error("Error during Ip Checks", "error", err)
 			}
 		case sig := <-sigs:
 			slog.Info("Received signal", "signal", sig.String())

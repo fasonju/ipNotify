@@ -12,9 +12,9 @@ import (
 // checkIpDiffAndNotify compares current IPs with previous ones,
 // triggers notifications if changes are detected.
 func checkIpDiffAndNotify(previousIpv4, previousIpv6 string, cfg *types.Config) (string, string, error) {
-	newIpv4, newIpv6, err := fetchCurrentIPs(cfg)
-	if err != nil {
-		return previousIpv4, previousIpv6, err
+	newIpv4, newIpv6, ipv4Err, ipv6Err := fetchCurrentIPs(cfg)
+	if ipv4Err != nil && ipv6Err != nil {
+		return previousIpv4, previousIpv6, ipv4Err
 	}
 
 	if ipsChanged(previousIpv4, newIpv4, previousIpv6, newIpv6) {
@@ -31,6 +31,13 @@ func checkIpDiffAndNotify(previousIpv4, previousIpv6 string, cfg *types.Config) 
 		}
 	} else {
 		slog.Info("No IP change", "ipv4", newIpv4, "ipv6", newIpv6)
+	}
+
+	if ipv4Err != nil {
+		return newIpv4, newIpv6, ipv4Err
+	}
+	if ipv6Err != nil {
+		return newIpv4, newIpv6, ipv4Err
 	}
 
 	return newIpv4, newIpv6, nil

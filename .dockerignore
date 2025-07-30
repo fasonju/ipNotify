@@ -38,3 +38,4 @@ test/
 # Ignore README, LICENSE (usually not needed inside the container)
 README.md
 LICENSE
+scripts
