@@ -1,21 +1,33 @@
 name: Build and publish a Docker image to ghcr.io
+
 on:
   release:
     types: [published]
 
 jobs:
   docker_publish:
-    runs-on: "ubuntu-latest"
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
-      - name: Extract release version
-        id: get_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-      - name: build and push
+
+      - name: Set VERSION from tag
+        id: vars
+        run: echo "VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
+
+      - name: Show version
+        run: echo "Tag version is: $VERSION"
+
+      - name: Login to GHCR
+        run: echo "${{ secrets.GH_PAT }}" | docker login ghcr.io -u fasonju --password-stdin
+
+      - name: Build and tag Docker image
         run: |
-          docker login --username fasonju --password ${{secrets.GH_PAT}} ghcr.io
           docker build \
-            --tag ghcr.io/fasonju/ipnotify:latest .
-          docker push  ghcr.io/fasonju/ipnotify:latest
+            -t ghcr.io/fasonju/ipnotify:latest \
+            -t ghcr.io/fasonju/ipnotify:${VERSION} .
+
+      - name: Push Docker images
+        run: |
+          docker push ghcr.io/fasonju/ipnotify:latest
           docker push ghcr.io/fasonju/ipnotify:${VERSION}
