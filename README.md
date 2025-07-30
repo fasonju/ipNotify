@@ -1,12 +1,10 @@
-
 ## ipNotify
 
 ipNotify is an event triggering tool for when the host's public ip changes.
 
-
 ## Deployment
 
-To deploy this project copy and modify the ``docker-compose.yml`` file and run
+To deploy this project copy and modify the `docker-compose.yml` file and run
 
 ```bash
   docker compose up -d
@@ -65,15 +63,11 @@ Configure the behavior of the public IP tracker using the following environment 
 
 Contributions are always welcome!
 
-
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
 
 ## Features
 
 - ipv4 and/or ipv6 tracking
 - SMTP notifications
-
-
