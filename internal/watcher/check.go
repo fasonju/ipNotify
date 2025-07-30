@@ -21,6 +21,11 @@ func checkIpDiffAndNotify(previousIpv4, previousIpv6 string, cfg *types.Config) 
 			slog.Info("Notifying through SMTP")
 			actions.NotifySMTP(cfg, message)
 		}
+
+		if cfg.ScriptsEnabled {
+			slog.Info("Executing scripts")
+			actions.ExecuteScripts(previousIpv4, newIpv4, previousIpv6, newIpv6, message)
+		}
 	} else {
 		slog.Info("No IP change", "ipv4", newIpv4, "ipv6", newIpv6)
 	}

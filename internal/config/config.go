@@ -81,19 +81,22 @@ func LoadConfig() (*types.Config, error) {
 		}
 	}
 
+	scriptsEnabled := os.Getenv("SCRIPTS_ENABLED") == "true"
+
 	return &types.Config{
-		Ipv4url:      IPV4_URL,
-		Ipv6url:      IPV6_URL,
-		Ipv4Enabled:  ipv4Enabled,
-		Ipv6Enabled:  ipv6Enabled,
-		Interval:     interval,
-		SmtpEnabled:  smtpEnabled,
-		SmtpServer:   smtpServer,
-		SmtpUsername: smtpUsername,
-		SmtpPassword: smtpPassword,
-		SmtpFrom:     smtpFrom,
-		SmtpTo:       smtpTo,
-		SmtpPort:     smtpPort,
+		Ipv4url:        IPV4_URL,
+		Ipv6url:        IPV6_URL,
+		Ipv4Enabled:    ipv4Enabled,
+		Ipv6Enabled:    ipv6Enabled,
+		Interval:       interval,
+		SmtpEnabled:    smtpEnabled,
+		SmtpServer:     smtpServer,
+		SmtpUsername:   smtpUsername,
+		SmtpPassword:   smtpPassword,
+		SmtpFrom:       smtpFrom,
+		SmtpTo:         smtpTo,
+		SmtpPort:       smtpPort,
+		ScriptsEnabled: scriptsEnabled,
 	}, nil
 }
 
