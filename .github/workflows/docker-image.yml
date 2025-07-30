@@ -9,9 +9,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Extract release version
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
       - name: build and push
         run: |
           docker login --username fasonju --password ${{secrets.GH_PAT}} ghcr.io
           docker build \
             --tag ghcr.io/fasonju/ipnotify:latest .
           docker push  ghcr.io/fasonju/ipnotify:latest
+          docker push ghcr.io/fasonju/ipnotify:${VERSION}
