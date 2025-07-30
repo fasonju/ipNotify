@@ -10,7 +10,7 @@ To deploy this project copy and modify the `docker-compose.yml` file and run
   docker compose up -d
 ```
 
-Alternatively you can simply run the binary alongside a .env file
+Alternatively you can simply run the binary alongside a .env file or by setting env variables manually
 
 # Environment Variables
 
@@ -59,6 +59,11 @@ Configure the behavior of the public IP tracker using the following environment 
   The recipient email address for IP change notifications.  
   Example: `SMTP_TO=example@gmail.com`
 
+- `SCRIPTS_ENABLED`
+  Enable tracking of the public IPv6 address.  
+  Values: `true` or `false`  
+  Example: `IPV6_ENABLED=true`
+
 ## Contributing
 
 Contributions are always welcome!
@@ -71,3 +76,4 @@ Contributions are always welcome!
 
 - ipv4 and/or ipv6 tracking
 - SMTP notifications
+- Executing arbitrary scripts
