@@ -60,9 +60,9 @@ Configure the behavior of the public IP tracker using the following environment 
   Example: `SMTP_TO=example@gmail.com`
 
 - `SCRIPTS_ENABLED`
-  Enable tracking of the public IPv6 address.  
+  Enable execution of scripts on IP change.
   Values: `true` or `false`  
-  Example: `IPV6_ENABLED=true`
+  Example: `SCRIPTS_ENABLED=true`
 
 ## Contributing
 
@@ -76,4 +76,4 @@ Contributions are always welcome!
 
 - ipv4 and/or ipv6 tracking
 - SMTP notifications
-- Executing arbitrary scripts
+- Executing arbitrary scripts on IP change
