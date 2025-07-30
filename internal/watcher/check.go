@@ -34,10 +34,10 @@ func checkIpDiffAndNotify(previousIpv4, previousIpv6 string, cfg *types.Config) 
 	}
 
 	if ipv4Err != nil {
-		return newIpv4, newIpv6, ipv4Err
+		return previousIpv4, newIpv6, ipv4Err
 	}
 	if ipv6Err != nil {
-		return newIpv4, newIpv6, ipv4Err
+		return newIpv4, previousIpv6, ipv4Err
 	}
 
 	return newIpv4, newIpv6, nil
