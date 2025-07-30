@@ -1,4 +1,4 @@
-package main
+package watcher
 
 import (
 	"fmt"
@@ -14,7 +14,7 @@ import (
 	"github.com/fasonju/ipNotify/internal/types"
 )
 
-func listenIps(cfg *types.Config) {
+func ListenIps(cfg *types.Config) {
 	previousIpv4, previousIpv6 := getInitialIPs(cfg)
 
 	sigs := setupSignalChannel()

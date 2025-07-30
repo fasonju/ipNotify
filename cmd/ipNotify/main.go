@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/fasonju/ipNotify/internal/config"
+	"github.com/fasonju/ipNotify/internal/watcher"
 )
 
 func main() {
@@ -17,5 +18,5 @@ func main() {
 	}
 
 	slog.Info("config loaded")
-	listenIps(cfg)
+	watcher.ListenIps(cfg)
 }
