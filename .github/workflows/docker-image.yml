@@ -15,9 +15,6 @@ jobs:
         id: vars
         run: echo "VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
-      - name: Show version
-        run: echo "Tag version is: $VERSION"
-
       - name: Login to GHCR
         run: echo "${{ secrets.GH_PAT }}" | docker login ghcr.io -u fasonju --password-stdin
 
