@@ -17,7 +17,7 @@ func checkIpDiffAndNotify(previousIpv4, previousIpv6 string, cfg *types.Config) 
 		return previousIpv4, previousIpv6, ipv4Err
 	}
 
-	if ipsChanged(previousIpv4, newIpv4, previousIpv6, newIpv6) {
+	if ipsChanged(previousIpv4, newIpv4, previousIpv6, newIpv6) || ipv4Err != nil || ipv6Err != nil {
 		message := formatChangeMessage(previousIpv4, newIpv4, previousIpv6, newIpv6, cfg, ipv4Err, ipv6Err)
 
 		if cfg.SmtpEnabled {
