@@ -13,5 +13,5 @@ jobs:
         run: |
           docker login --username fasonju --password ${{secrets.GH_PAT}} ghcr.io
           docker build \
-            --tag ghcr.io/fasonju/ipNotify:latest .
-          docker push  ghcr.io/fasonju/ipNotify:latest
+            --tag ghcr.io/fasonju/ipnotify:latest .
+          docker push  ghcr.io/fasonju/ipnotify:latest
