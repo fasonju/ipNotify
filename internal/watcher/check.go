@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"strings"
 
-	"github.com/fasonju/ipNotify/internal/notify"
+	"github.com/fasonju/ipNotify/internal/actions"
 	"github.com/fasonju/ipNotify/internal/types"
 )
 
@@ -19,7 +19,7 @@ func checkIpDiffAndNotify(previousIpv4, previousIpv6 string, cfg *types.Config) 
 		message := formatChangeMessage(previousIpv4, newIpv4, previousIpv6, newIpv6, cfg)
 		if cfg.SmtpEnabled {
 			slog.Info("Notifying through SMTP")
-			notify.NotifySMTP(cfg, message)
+			actions.NotifySMTP(cfg, message)
 		}
 	} else {
 		slog.Info("No IP change", "ipv4", newIpv4, "ipv6", newIpv6)
