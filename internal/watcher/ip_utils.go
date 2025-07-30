@@ -34,24 +34,27 @@ func getInitialIPs(cfg *types.Config) (string, string) {
 	return previousIpv4, previousIpv6
 }
 
-// fetchCurrentIPs returns the current IPv4/IPv6 addresses or an error if a lookup fails.
-func fetchCurrentIPs(cfg *types.Config) (string, string, error) {
+// fetchCurrentIPs returns the current IPv4 and IPv6 addresses based on the config.
+// It returns separate errors for IPv4 and IPv6 lookups if they fail.
+// If an IP version is disabled, its address will be empty and error nil.
+func fetchCurrentIPs(cfg *types.Config) (string, string, error, error) {
 	var newIpv4, newIpv6 string
-	var err error
+	var ipv4Err error
+	var ipv6Err error
 
 	if cfg.Ipv4Enabled {
-		newIpv4, err = requests.GetIP(cfg.Ipv4url)
-		if err != nil {
-			return "", "", err
-		}
+		newIpv4, ipv4Err = requests.GetIP(cfg.Ipv4url)
 	}
 
 	if cfg.Ipv6Enabled {
-		newIpv6, err = requests.GetIP(cfg.Ipv6url)
-		if err != nil {
-			return "", "", err
-		}
+		newIpv6, ipv6Err = requests.GetIP(cfg.Ipv6url)
+	}
+	if ipv4Err != nil {
+		newIpv4 = ""
+	}
+	if ipv6Err != nil {
+		newIpv6 = ""
 	}
 
-	return newIpv4, newIpv6, nil
+	return newIpv4, newIpv6, ipv4Err, ipv6Err
 }
