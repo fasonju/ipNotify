@@ -1,0 +1,40 @@
+# Ignore version control
+.git
+.gitignore
+
+# Ignore local environment files (optional, if you load them differently)
+.env
+
+# Ignore Dockerfile and docker-compose.yml if not needed inside container
+docker-compose.yml
+Dockerfile
+
+# Ignore binaries, build artifacts, and temporary files
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+*.log
+
+# Ignore Go build cache and output directories
+bin/
+build/
+vendor/
+
+# Ignore IDE/editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore scripts if not needed in container (optional)
+scripts/
+
+# Ignore tests if not needed in the container
+test/
+
+# Ignore README, LICENSE (usually not needed inside the container)
+README.md
+LICENSE

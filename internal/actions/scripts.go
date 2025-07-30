@@ -20,8 +20,26 @@ func ExecuteScripts(previousIpv4 string, newIpv4 string, previousIpv6 string, ne
 
 	for _, file := range files {
 		if !file.IsDir() {
-			scriptPath := filepath.Join(SCRIPTS_PATH, file.Name())
+			fileInfo, err := file.Info()
+			if err != nil {
+				slog.Warn("Unable to check file permissions, continuing without checking")
+			} else {
+				// Check if file is executable by user
+				if fileInfo.Mode()&0111 == 0 {
+					// Not executable, try to add executable permission for user
+					newMode := fileInfo.Mode() | 0100 // Add user executable bit
+					scriptPath := filepath.Join(SCRIPTS_PATH, file.Name())
+					err := os.Chmod(scriptPath, newMode)
+					if err != nil {
+						slog.Error("Failed to make script executable", "script", file.Name(), "error", err)
+						continue // skip running this script
+					} else {
+						slog.Info("Made script executable", "script", file.Name())
+					}
+				}
+			}
 
+			scriptPath := filepath.Join(SCRIPTS_PATH, file.Name())
 			slog.Info("Executing script", "name", file.Name())
 
 			cmd := exec.Command(scriptPath, previousIpv4, newIpv4, previousIpv6, newIpv6, message)
