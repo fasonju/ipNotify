@@ -1,14 +1,18 @@
 services:
   ipnotify:
     image: ghcr.io/fasonju/ipnotify:latest
-    environment:
-      INTERVAL: "1d"
-      IPV6_ENABLED: "true"
-      IPV4_ENABLED: "true"
-      SMTP_ENABLED: "true"
-      SMTP_SERVER: ""
-      SMTP_USERNAME: ""
-      SMTP_PASSWORD: ""
-      SMTP_FROM: ""
-      SMTP_TO: ""
-      SMTP_PORT: ""
+    volumes:
+      - "./scripts:/scripts"
+    env_file:
+      - path: ./.env
+    # environment:
+    #   INTERVAL: "1d"
+    #   IPV6_ENABLED: "true"
+    #   IPV4_ENABLED: "true"
+    #   SMTP_ENABLED: "true"
+    #   SMTP_SERVER: ""
+    #   SMTP_USERNAME: ""
+    #   SMTP_PASSWORD: ""
+    #   SMTP_FROM: ""
+    #   SMTP_TO: ""
+    #   SMTP_PORT: ""
