@@ -3,6 +3,7 @@ package requests
 import (
 	"io"
 	"net/http"
+	"strings"
 )
 
 func GetIP(url string) (string, error) {
@@ -26,5 +27,5 @@ func GetIP(url string) (string, error) {
 		return "", err
 	}
 
-	return string(body), nil
+	return strings.TrimRight(string(body), " \t\n\r"), nil
 }

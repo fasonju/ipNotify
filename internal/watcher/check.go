@@ -18,7 +18,7 @@ func checkIpDiffAndNotify(previousIpv4, previousIpv6 string, cfg *types.Config) 
 	}
 
 	if ipsChanged(previousIpv4, newIpv4, previousIpv6, newIpv6) {
-		message := formatChangeMessage(previousIpv4, newIpv4, previousIpv6, newIpv6, cfg)
+		message := formatChangeMessage(previousIpv4, newIpv4, previousIpv6, newIpv6, cfg, ipv4Err, ipv6Err)
 
 		if cfg.SmtpEnabled {
 			slog.Info("Notifying through SMTP")
@@ -49,8 +49,15 @@ func ipsChanged(prev4, new4, prev6, new6 string) bool {
 }
 
 // formatChangeMessage builds a message describing the IP changes.
-func formatChangeMessage(prev4, new4, prev6, new6 string, cfg *types.Config) string {
+func formatChangeMessage(prev4, new4, prev6, new6 string, cfg *types.Config, ipv4Err, ipv6Err error) string {
 	var builder strings.Builder
+
+	if ipv4Err != nil {
+		builder.WriteString(fmt.Sprintf("IPV4 IP query error: %s", ipv4Err.Error()))
+	}
+	if ipv6Err != nil {
+		builder.WriteString(fmt.Sprintf("IPV6 IP query error: %s", ipv6Err.Error()))
+	}
 
 	if cfg.Ipv4Enabled && new4 != prev4 {
 		builder.WriteString(fmt.Sprintf("IPv4 changed from %s to %s\n", prev4, new4))
